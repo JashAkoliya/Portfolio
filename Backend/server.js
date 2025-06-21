@@ -1,46 +1,49 @@
-// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const dotenv = require('dotenv');
+const contactRoutes = require('./routes/contact'); // Adjust if your path is different
+
+dotenv.config();
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// ✅ Middleware to log incoming request origins (optional for debugging)
+app.use((req, res, next) => {
+  console.log('Origin:', req.headers.origin);
+  next();
+});
+
+// ✅ CORS setup to allow only your frontend
+app.use(cors({
+  origin: 'https://portfolio-rcpa.onrender.com', // <-- your deployed frontend URL
+  methods: ['GET', 'POST'],
+  credentials: false
+}));
+
+// ✅ Body parser
 app.use(express.json());
 
-// MongoDB Connection
-mongoose.connect('mongodb://localhost:27017/dataglobe', {
+// ✅ MongoDB connection (use MongoDB Atlas URI in Render Environment Variables)
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-// .then(() => console.log('✅ MongoDB connected'))
-// .catch((err) => console.error('❌ MongoDB connection error:', err));
-
-// Define Schema and Model
-const ContactSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  contact: String,
-  countryCode: String,
-  website: String,
-  budget: String,
-  requirement: String,
-  message: String,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log('MongoDB connected');
+}).catch((err) => {
+  console.error('MongoDB connection error:', err);
 });
 
-const Contact = mongoose.model('Contact', ContactSchema);
+// ✅ Routes
+app.use('/api/contact', contactRoutes);
 
-// API Route
-app.post('/api/contact', async (req, res) => {
-  try {
-    const newContact = new Contact(req.body);
-    await newContact.save();
-    res.status(200).json({ success: true, message: 'Form submitted' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: 'Server error' });
-  }
+// ✅ Root check
+app.get('/', (req, res) => {
+  res.send('Backend is running.');
 });
 
-app.listen(PORT);
+// ✅ Start server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
