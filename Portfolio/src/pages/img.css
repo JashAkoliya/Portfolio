@@ -1,0 +1,15 @@
+/* HeroSection.css */
+.hero-background {
+  background-image: url('../assets/back.jpg'); /* correct relative path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 80vh;
+  position: relative;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* dark overlay */
+}
