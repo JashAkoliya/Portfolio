@@ -14,8 +14,8 @@ mongoose.connect('mongodb://localhost:27017/dataglobe', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => console.log('✅ MongoDB connected'))
-.catch((err) => console.error('❌ MongoDB connection error:', err));
+// .then(() => console.log('✅ MongoDB connected'))
+// .catch((err) => console.error('❌ MongoDB connection error:', err));
 
 // Define Schema and Model
 const ContactSchema = new mongoose.Schema({
@@ -43,6 +43,6 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`🚀 Server running at http://localhost:${PORT}`);
+// });
