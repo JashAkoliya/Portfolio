@@ -21,36 +21,36 @@ const Contact = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const response = await fetch('http://localhost:5000/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+  try {
+    const response = await fetch('https://portfolio-back-bix2.onrender.com/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      alert('Form submitted and stored in database!');
+      setFormData({
+        name: '',
+        email: '',
+        contact: '',
+        countryCode: '+44',
+        website: '',
+        budget: '',
+        requirement: '',
+        message: ''
       });
-
-      const result = await response.json();
-      if (response.ok) {
-        alert('Form submitted and stored in database!');
-        setFormData({
-          name: '',
-          email: '',
-          contact: '',
-          countryCode: '+44',
-          website: '',
-          budget: '',
-          requirement: '',
-          message: ''
-        });
-      } else {
-        alert(result.message || 'Something went wrong');
-      }
-    } catch (error) {
-      console.error(error);
-      alert('Failed to submit the form.');
+    } else {
+      alert(result.message || 'Something went wrong');
     }
-  };
+  } catch (error) {
+    console.error(error);
+    alert('Failed to submit the form.');
+  }
+};
 
   return (
     <section className="py-16 px-6 md:px-20 bg-gray-50 text-gray-800">
