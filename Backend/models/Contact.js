@@ -1,30 +1,14 @@
-const handleSubmit = async (e) => {
-  e.preventDefault();
+const mongoose = require('mongoose');
 
-  try {
-    const response = await fetch('http://localhost:5000/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
+const contactSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  contact: String,
+  countryCode: String,
+  website: String,
+  budget: String,
+  requirement: String,
+  message: String
+});
 
-    if (response.ok) {
-      alert('Form submitted successfully!');
-      setFormData({
-        name: '',
-        email: '',
-        contact: '',
-        countryCode: '+213',
-        website: '',
-        budget: '',
-        requirement: '',
-        message: ''
-      });
-    } else {
-      alert('Submission failed. Try again.');
-    }
-  } catch (err) {
-    console.error(err);
-    alert('Something went wrong.');
-  }
-};
+module.exports = mongoose.model('Contact', contactSchema);
